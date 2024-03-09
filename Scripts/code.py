@@ -28,12 +28,17 @@ tres = []
 player_surf = pygame.image.load('player.bmp')
 cupper_surf = pygame.image.load("cupper.bmp")
 cuppers = []
+castles = []
+reapet_castles = 10
 while reapet_trees != 0 :
     reapet_trees = reapet_trees - 1
     tres.append((random.randint(-2000,2000) , (random.randint(-2000,2000))))
 while reapet_cupper != 0 :
     reapet_cupper = reapet_cupper - 1
     cuppers.append((random.randint(-2000,2000) , (random.randint(-2000,2000))))
+while reapet_castles != 0 :
+    reapet_castles = reapet_castles - 1
+    castles.append((random.randint(-2000,2000) , (random.randint(-2000,2000))))
 
 count_tree = len(tres)
 tree_surf = pygame.image.load('tree.bmp')
@@ -42,7 +47,7 @@ sc.blit(tree_surf, tree_rect)
 pygame.display.update()
 chundra_surf = pygame.image.load('chundra.bmp')
 chundra_count = 0
-
+castle_surf = pygame.image.load('castle.bmp')
 chundra = []
 while chundra_count != 0 :
     chundra_count = chundra_count - 1
@@ -58,6 +63,7 @@ pygame.display.update()
 
 count_tree = len(tres)
 count_cupper = len(cuppers)
+count_castle = len(castles)
 while chundra_max != 0 :
     chundra_surf = pygame.image.load('chundra.bmp')
     chundra_max = chundra_max - 1
@@ -71,11 +77,11 @@ chundra_max = len(chundra)
 while 1 :
 
 
-     def update( count_cupper,cupper_surf ,count_tree ,tree_surf , tree_rect , tres , chundra_max , x , y) :
+     def update( count_castle,count_cupper,cupper_surf ,count_tree ,tree_surf , tree_rect , tres , chundra_max , x , y) :
          pygame.draw.rect(sc, (0, 255, 255), (0, 0, 1000, 1000), a)
 
 
-         while count_tree != 0:
+         while count_tree != 0 :
              ox, oy = (tres[(count_tree - 1)])
              ox = ox - x
              oy = oy - y
@@ -91,6 +97,14 @@ while 1 :
              count_cupper = count_cupper - 1
              cupper_rect = cupper_surf.get_rect(bottomright=(20, 20), center=(ocx,ocy))
              sc.blit(cupper_surf, cupper_rect)
+         while count_castle != 0:
+             ocax, ocay = (castles[(count_castle - 1)])
+             ocax = ocax - x
+             ocay = ocay - y
+             castle_surf = pygame.image.load('castle.bmp')
+             count_castle = count_castle - 1
+             castle_rect = castle_surf.get_rect(bottomright=(20, 20), center=(ocax,ocay))
+             sc.blit(castle_surf, castle_rect)
          while chundra_max != 0:
              chundra_surf = pygame.image.load('chundra.bmp')
              chundra_max = chundra_max - 1
@@ -126,25 +140,25 @@ while 1 :
 
           if event.type == pygame.KEYDOWN:
               if event.key == pygame.K_LEFT:
-                  update(count_cupper,cupper_surf ,count_tree ,tree_surf , tree_rect , tres , chundra_max , x , y)
+                  update( count_castle,count_cupper,cupper_surf ,count_tree ,tree_surf , tree_rect , tres , chundra_max , x , y)
                   x = x - speed
                   player_rect = player_surf.get_rect(bottomright=(10, 20), center=(500, 500))
                   sc.blit(player_surf, player_rect)
                   pygame.display.update()
               elif event.key == pygame.K_RIGHT:
-                  update(count_cupper,cupper_surf ,count_tree ,tree_surf , tree_rect , tres , chundra_max , x , y)
+                  update( count_castle,count_cupper,cupper_surf ,count_tree ,tree_surf , tree_rect , tres , chundra_max , x , y)
                   x = x + speed
                   player_rect = player_surf.get_rect(bottomright=(10, 20), center=(500, 500))
                   sc.blit(player_surf, player_rect)
                   pygame.display.update()
               elif event.key == pygame.K_DOWN:
-                  update(count_cupper,cupper_surf ,count_tree ,tree_surf , tree_rect , tres , chundra_max , x , y)
+                  update( count_castle,count_cupper,cupper_surf ,count_tree ,tree_surf , tree_rect , tres , chundra_max , x , y)
                   y = y + speed
                   player_rect = player_surf.get_rect(bottomright=(10, 20), center=(500, 500))
                   sc.blit(player_surf, player_rect)
                   pygame.display.update()
               elif event.key == pygame.K_UP:
-                  update(count_cupper,cupper_surf ,count_tree ,tree_surf , tree_rect , tres , chundra_max , x , y)
+                  update( count_castle,count_cupper,cupper_surf ,count_tree ,tree_surf , tree_rect , tres , chundra_max , x , y)
                   y = y - speed
                   player_rect = player_surf.get_rect(bottomright=(10, 20), center=(500, 500))
                   sc.blit(player_surf, player_rect)
