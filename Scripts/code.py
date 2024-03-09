@@ -15,19 +15,25 @@ sc = pygame.display.set_mode((1000 ,1000))
 a = 0
 pygame.draw.rect(sc, (0 , 0 , 255) , (0,0,1000 , 1000) , a)
 pygame.display.update()
-x = 10
-y = 10
+x = 500
+y = 500
 gamer = pygame.draw.rect(sc,(255,0,0) , (500,500,50,20))
 pygame.display.update()
 speed = 5
 inventory = []
 cords = 0
-reapet_trees = 50
+reapet_trees = 1000
+reapet_cupper = 100
 tres = []
 player_surf = pygame.image.load('player.bmp')
+cupper_surf = pygame.image.load("cupper.bmp")
+cuppers = []
 while reapet_trees != 0 :
     reapet_trees = reapet_trees - 1
-    tres.append((random.randint(0,1000) , (random.randint(0,1000))))
+    tres.append((random.randint(-2000,2000) , (random.randint(-2000,2000))))
+while reapet_cupper != 0 :
+    reapet_cupper = reapet_cupper - 1
+    cuppers.append((random.randint(-2000,2000) , (random.randint(-2000,2000))))
 
 count_tree = len(tres)
 tree_surf = pygame.image.load('tree.bmp')
@@ -35,7 +41,7 @@ tree_rect = tree_surf.get_rect(bottomright=(30,50 ) , center=(200, 150))
 sc.blit(tree_surf, tree_rect)
 pygame.display.update()
 chundra_surf = pygame.image.load('chundra.bmp')
-chundra_count = 1
+chundra_count = 0
 
 chundra = []
 while chundra_count != 0 :
@@ -45,18 +51,13 @@ while chundra_count != 0 :
 chundra_max = len(chundra)
 chundra_rect = chundra_surf.get_rect( bottomright = (10,20 ) , center= (tres[(count_tree - 1)]) )
 
-player_rect = player_surf.get_rect(bottomright=(10,20 ) , center=(200, 150))
+player_rect = player_surf.get_rect(bottomright=(10,20 ) , center=(500, 500))
 sc.blit(player_surf, player_rect)
 pygame.display.update()
 
-while count_tree != 0 :
-    tree_surf = pygame.image.load('tree.bmp')
-    count_tree = count_tree - 1
 
-    tree_rect = tree_surf.get_rect( bottomright = (30,50 ) , center= (tres[count_tree]) )
-    sc.blit(tree_surf, tree_rect)
-    pygame.display.update()
 count_tree = len(tres)
+count_cupper = len(cuppers)
 while chundra_max != 0 :
     chundra_surf = pygame.image.load('chundra.bmp')
     chundra_max = chundra_max - 1
@@ -65,37 +66,31 @@ while chundra_max != 0 :
     sc.blit(tree_surf, tree_rect)
     pygame.display.update()
 chundra_max = len(chundra)
-class obg:
-    def __init__(self , ox , oy , osx , osy ,give):
-        self.ox = ox
-        self.oy = oy
-        self.give = give
-        self.osx = osx
-        self.osy = osy
-        pygame.draw.rect(sc , (0 , 255 , 0) , (self.ox , self.oy , self.osx , self.osy) )
-        pygame.display.update()
-    def update_obg(self):
-        pygame.draw.rect(sc, (0, 255, 0), (self.ox, self.oy, self.osx, self.osy))
-        pygame.display.update()
-    def check (self , xp , yp) :
-        if xp == self.ox and yp == self.oy :
-            inventory.append(self.give)
 
 
-stick = obg( 50 , 50 , 20 , 20 , "[wood stick]")
 while 1 :
 
 
-     def update(count_tree ,tree_surf , tree_rect , tres , chundra_max , x , y) :
-         pygame.draw.rect(sc, (0, 0, 255), (0, 0, 1000, 1000), a)
+     def update( count_cupper,cupper_surf ,count_tree ,tree_surf , tree_rect , tres , chundra_max , x , y) :
+         pygame.draw.rect(sc, (0, 255, 255), (0, 0, 1000, 1000), a)
 
-         stick.update_obg()
+
          while count_tree != 0:
+             ox, oy = (tres[(count_tree - 1)])
+             ox = ox - x
+             oy = oy - y
              tree_surf = pygame.image.load('tree.bmp')
              count_tree = count_tree - 1
-
-             tree_rect = tree_surf.get_rect(bottomright=(30, 50), center=(tres[count_tree]))
+             tree_rect = tree_surf.get_rect(bottomright=(30, 50), center=(ox,oy))
              sc.blit(tree_surf, tree_rect)
+         while count_cupper != 0:
+             ocx, ocy = (cuppers[(count_cupper - 1)])
+             ocx = ocx - x
+             ocy = ocy - y
+             cupper_surf = pygame.image.load('cupper.bmp')
+             count_cupper = count_cupper - 1
+             cupper_rect = cupper_surf.get_rect(bottomright=(20, 20), center=(ocx,ocy))
+             sc.blit(cupper_surf, cupper_rect)
          while chundra_max != 0:
              chundra_surf = pygame.image.load('chundra.bmp')
              chundra_max = chundra_max - 1
@@ -128,30 +123,30 @@ while 1 :
      for event in pygame.event.get() :
           if event.type == pygame.QUIT:
               exit()
-          stick.check(x , y)
+
           if event.type == pygame.KEYDOWN:
               if event.key == pygame.K_LEFT:
-                  update(count_tree ,tree_surf , tree_rect , tres , chundra_max , x , y)
+                  update(count_cupper,cupper_surf ,count_tree ,tree_surf , tree_rect , tres , chundra_max , x , y)
                   x = x - speed
-                  player_rect = player_surf.get_rect(bottomright=(10, 20), center=(x, y))
+                  player_rect = player_surf.get_rect(bottomright=(10, 20), center=(500, 500))
                   sc.blit(player_surf, player_rect)
                   pygame.display.update()
               elif event.key == pygame.K_RIGHT:
-                  update(count_tree ,tree_surf , tree_rect , tres , chundra_max , x , y)
+                  update(count_cupper,cupper_surf ,count_tree ,tree_surf , tree_rect , tres , chundra_max , x , y)
                   x = x + speed
-                  player_rect = player_surf.get_rect(bottomright=(10, 20), center=(x, y))
+                  player_rect = player_surf.get_rect(bottomright=(10, 20), center=(500, 500))
                   sc.blit(player_surf, player_rect)
                   pygame.display.update()
               elif event.key == pygame.K_DOWN:
-                  update(count_tree ,tree_surf , tree_rect , tres , chundra_max , x , y)
+                  update(count_cupper,cupper_surf ,count_tree ,tree_surf , tree_rect , tres , chundra_max , x , y)
                   y = y + speed
-                  player_rect = player_surf.get_rect(bottomright=(10, 20), center=(x, y))
+                  player_rect = player_surf.get_rect(bottomright=(10, 20), center=(500, 500))
                   sc.blit(player_surf, player_rect)
                   pygame.display.update()
               elif event.key == pygame.K_UP:
-                  update(count_tree ,tree_surf , tree_rect , tres , chundra_max , x , y)
+                  update(count_cupper,cupper_surf ,count_tree ,tree_surf , tree_rect , tres , chundra_max , x , y)
                   y = y - speed
-                  player_rect = player_surf.get_rect(bottomright=(10, 20), center=(x, y))
+                  player_rect = player_surf.get_rect(bottomright=(10, 20), center=(500, 500))
                   sc.blit(player_surf, player_rect)
                   pygame.display.update()
               elif event.key == pygame.K_ESCAPE:
