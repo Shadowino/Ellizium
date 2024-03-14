@@ -3,12 +3,14 @@ import random
 # import tkinter
 from tkinter import *
 from tkinter import ttk
+from objClass import *
+
 # from tkinter import image_types
 # from array import *
 
 # инициализация всякого
 pygame.init()
-Wsize = (800, 600)  # размеры окна, вместо магических чисел
+Wsize = (1024, 720)  # размеры окна, вместо магических чисел
 a = 0  # safdasd
 x = 500
 y = 500
@@ -30,7 +32,7 @@ player_surf = pygame.image.load('player.bmp')
 cupper_surf = pygame.image.load("cupper.bmp")
 cuppers = []
 castles = []
-reapet_castles = 10
+reapet_castles = 100
 while reapet_trees != 0:
     reapet_trees = reapet_trees - 1
     tres.append((random.randint(-2000, 2000), (random.randint(-2000, 2000))))
@@ -62,7 +64,6 @@ player_rect = player_surf.get_rect(bottomright=(10, 20), center=(500, 500))
 sc.blit(player_surf, player_rect)
 pygame.display.update()
 
-
 count_tree = len(tres)
 count_cupper = len(cuppers)
 count_castle = len(castles)
@@ -76,70 +77,99 @@ while chundra_max != 0:
     pygame.display.update()
 chundra_max = len(chundra)
 
+Gobj: list[drawObj] = []  # список всех обьектов
+# загрузка обьектов в общий список всего
+for i in tres:
+    Gobj.append(drawObj(i[0], i[1], "tree.bmp"))
+for i in cuppers:
+    Gobj.append(drawObj(i[0], i[1], "cupper.bmp"))
+for i in castles:
+    Gobj.append(drawObj(i[0], i[1], "castle.bmp"))
+
+
+# функция открисовки обьектов из списка Gobj
+def drawUPD(x, y):
+    """
+    функция открисовки всего, потенциальная замена для update \n
+    **warning работает с глобальной `sc`** \n
+    TODO: **переписать** `update` сюда \n
+    """
+    pygame.draw.rect(sc, (0, 255, 255), (0, 0, 1000, 1000), a)  # очистка экрана..
+    for i in Gobj:
+        ox, oy = (i.posX - x, i.posY - y)
+        sc.blit(i.spriteSurf, (ox, oy))
+        # tree_surf = pygame.image.load(i.sprite)
+        # tree_rect = tree_surf.get_rect(bottomright=(30, 50), center=(ox, oy))
+
+
+def drawText(text: str, posX, posY):
+    """
+    функция открисовки текста \n
+    !warning работает с глобальной `sc`!
+    """
+    text1 = pygame.font.Font(None, 36).render(text, 1, (100, 0, 0))
+    sc.blit(text1, (posX, posY))
+
+
+def update(count_castle, count_cupper, cupper_surf, count_tree, tree_surf, tree_rect, tres, chundra_max, x, y):
+    sc.fill((0, 255, 255)) # ПРАВИЛЬНАЯ очистка экрана
+    drawUPD(x, y) # заменяет весь закоментированный ниже код
+    # while count_tree != 0:
+    #     ox, oy = (tres[(count_tree - 1)])
+    #     ox = ox - x
+    #     oy = oy - y
+    #     tree_surf = pygame.image.load('tree.bmp')
+    #     count_tree = count_tree - 1
+    #     tree_rect = tree_surf.get_rect(bottomright=(30, 50), center=(ox, oy))
+    #     sc.blit(tree_surf, tree_rect)
+    # while count_cupper != 0:
+    #     ocx, ocy = (cuppers[(count_cupper - 1)])
+    #     ocx = ocx - x
+    #     ocy = ocy - y
+    #     cupper_surf = pygame.image.load('cupper.bmp')
+    #     count_cupper = count_cupper - 1
+    #     cupper_rect = cupper_surf.get_rect(bottomright=(20, 20), center=(ocx, ocy))
+    #     sc.blit(cupper_surf, cupper_rect)
+    # while count_castle != 0:
+    #     ocax, ocay = (castles[(count_castle - 1)])
+    #     ocax = ocax - x
+    #     ocay = ocay - y
+    #     castle_surf = pygame.image.load('castle.bmp')
+    #     count_castle = count_castle - 1
+    #     castle_rect = castle_surf.get_rect(bottomright=(20, 20), center=(ocax, ocay))
+    #     sc.blit(castle_surf, castle_rect)
+    while chundra_max != 0:
+        chundra_surf = pygame.image.load('chundra.bmp')
+        chundra_max = chundra_max - 1
+        xc, yc = chundra[chundra_max]
+        if x << xc:
+            del chundra[chundra_max]
+            xc = xc + 1
+            chundra.append((yc, xc))
+        if x >> xc:
+            del chundra[chundra_max]
+            xc = xc - 1
+            chundra.append((yc, xc))
+        if y << yc:
+            del chundra[chundra_max]
+            yc = yc - 1
+            chundra.append((yc, xc))
+        if y >> yc:
+            del chundra[chundra_max]
+            yc = yc + 1
+            chundra.append((yc, xc))
+        chundra_rect = chundra_surf.get_rect(bottomright=(30, 50), center=(chundra[chundra_max]))
+        sc.blit(chundra_surf, chundra_rect)
+        pygame.display.update()
+    chundra_max = len(chundra)
+    count_tree = len(tres)
+    pygame.display.update()  # много дупликатов
+    drawText("FPS" + str(15), 15, 0)
+
+
+update(count_castle, count_cupper, cupper_surf, count_tree, tree_surf, tree_rect, tres, chundra_max, x, y)
+
 while 1:
-
-    def drawText(text: str, posX, posY):
-        """
-        функция открисовки текста \n
-        !warning работает с глобальной `sc`!
-        """
-        text1 = pygame.font.Font(None, 36).render(text, 1, (100, 0, 0))
-        sc.blit(text1, (posX, posY))
-
-    def update(count_castle, count_cupper, cupper_surf, count_tree, tree_surf, tree_rect, tres, chundra_max, x, y):
-        pygame.draw.rect(sc, (0, 255, 255), (0, 0, 1000, 1000), a)  # очистка экрана..
-        drawText("FPS" + str(15), 15, 0)
-        while count_tree != 0:
-            ox, oy = (tres[(count_tree - 1)])
-            ox = ox - x
-            oy = oy - y
-            tree_surf = pygame.image.load('tree.bmp')
-            count_tree = count_tree - 1
-            tree_rect = tree_surf.get_rect(bottomright=(30, 50), center=(ox, oy))
-            sc.blit(tree_surf, tree_rect)
-        while count_cupper != 0:
-            ocx, ocy = (cuppers[(count_cupper - 1)])
-            ocx = ocx - x
-            ocy = ocy - y
-            cupper_surf = pygame.image.load('cupper.bmp')
-            count_cupper = count_cupper - 1
-            cupper_rect = cupper_surf.get_rect(bottomright=(20, 20), center=(ocx, ocy))
-            sc.blit(cupper_surf, cupper_rect)
-        while count_castle != 0:
-            ocax, ocay = (castles[(count_castle - 1)])
-            ocax = ocax - x
-            ocay = ocay - y
-            castle_surf = pygame.image.load('castle.bmp')
-            count_castle = count_castle - 1
-            castle_rect = castle_surf.get_rect(bottomright=(20, 20), center=(ocax, ocay))
-            sc.blit(castle_surf, castle_rect)
-        while chundra_max != 0:
-            chundra_surf = pygame.image.load('chundra.bmp')
-            chundra_max = chundra_max - 1
-            xc, yc = chundra[chundra_max]
-            if x << xc:
-                del chundra[chundra_max]
-                xc = xc + 1
-                chundra.append((yc, xc))
-            if x >> xc:
-                del chundra[chundra_max]
-                xc = xc - 1
-                chundra.append((yc, xc))
-            if y << yc:
-                del chundra[chundra_max]
-                yc = yc - 1
-                chundra.append((yc, xc))
-            if y >> yc:
-                del chundra[chundra_max]
-                yc = yc + 1
-                chundra.append((yc, xc))
-            chundra_rect = chundra_surf.get_rect(bottomright=(30, 50), center=(chundra[chundra_max]))
-            sc.blit(chundra_surf, chundra_rect)
-            pygame.display.update()
-        chundra_max = len(chundra)
-        count_tree = len(tres)
-        pygame.display.update()  # много дупликатов
-
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -154,7 +184,7 @@ while 1:
                 player_rect = player_surf.get_rect(bottomright=(10, 20), center=(500, 500))
                 sc.blit(player_surf, player_rect)
 
-                # pygame.display.update()
+                pygame.display.update()
             elif event.key == pygame.K_RIGHT:
                 update(count_castle, count_cupper, cupper_surf, count_tree, tree_surf, tree_rect, tres, chundra_max, x,
                        y)
