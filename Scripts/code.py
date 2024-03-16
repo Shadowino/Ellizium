@@ -97,7 +97,9 @@ def drawUPD(x, y):
     pygame.draw.rect(sc, (0, 255, 255), (0, 0, 1000, 1000), a)  # очистка экрана..
     for i in Gobj:
         ox, oy = (i.posX - x, i.posY - y)
-        sc.blit(i.spriteSurf, (ox, oy))
+        sp = i.spriteSurf
+        sc.blit(sp, (ox, oy))
+        # pygame.draw.rect(sc, [255, 255, 255], pygame.Rect(ox, oy, sp.get_width(), sp.get_height()), 2)
         # tree_surf = pygame.image.load(i.sprite)
         # tree_rect = tree_surf.get_rect(bottomright=(30, 50), center=(ox, oy))
 
