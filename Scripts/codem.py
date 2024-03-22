@@ -4,7 +4,7 @@ import random
 from tkinter import *
 from tkinter import ttk
 from objClass import *
-
+import time
 # from tkinter import image_types
 # from array import *
 
@@ -86,7 +86,6 @@ for i in cuppers:
 for i in castles:
     Gobj.append(drawObj(i[0], i[1], "castle.bmp"))
 
-
 # функция открисовки обьектов из списка Gobj
 def drawUPD(x, y):
     """
@@ -95,13 +94,21 @@ def drawUPD(x, y):
     TODO: **переписать** `update` сюда \n
     """
     pygame.draw.rect(sc, (0, 255, 255), (0, 0, 1000, 1000), a)  # очистка экрана..
+    Mrect = pygame.draw.rect(sc, [255, 255, 255], [mouse.get_pos(), (3, 3)], 2)
     for i in Gobj:
         ox, oy = (i.posX - x, i.posY - y)
         sp = i.spriteSurf
-        sc.blit(sp, (ox, oy))
+        rec = sc.blit(sp, (ox, oy))
+        if Mrect.colliderect(rec):
+            pygame.draw.rect(sc, [255, 255, 255], pygame.Rect(ox, oy, sp.get_width(), sp.get_height()), 2)
+
         # pygame.draw.rect(sc, [255, 255, 255], pygame.Rect(ox, oy, sp.get_width(), sp.get_height()), 2)
         # tree_surf = pygame.image.load(i.sprite)
         # tree_rect = tree_surf.get_rect(bottomright=(30, 50), center=(ox, oy))
+        pass
+    drawText("build:debug", 10, 10)
+    drawText("mouse:" + str(mouse.get_pos()), 10, 20)
+    pygame.display.update()  # необходимо для самостоятельной работы функции
 
 
 def drawText(text: str, posX, posY):
@@ -109,37 +116,15 @@ def drawText(text: str, posX, posY):
     функция открисовки текста \n
     !warning работает с глобальной `sc`!
     """
-    text1 = pygame.font.Font(None, 36).render(text, 1, (100, 0, 0))
+    text1 = pygame.font.SysFont("consolas", 15).render(text, 1, (10, 10, 10))
     sc.blit(text1, (posX, posY))
 
 
 def update(count_castle, count_cupper, cupper_surf, count_tree, tree_surf, tree_rect, tres, chundra_max, x, y):
     sc.fill((0, 255, 255)) # ПРАВИЛЬНАЯ очистка экрана
     drawUPD(x, y) # заменяет весь закоментированный ниже код
-    # while count_tree != 0:
-    #     ox, oy = (tres[(count_tree - 1)])
-    #     ox = ox - x
-    #     oy = oy - y
-    #     tree_surf = pygame.image.load('tree.bmp')
-    #     count_tree = count_tree - 1
-    #     tree_rect = tree_surf.get_rect(bottomright=(30, 50), center=(ox, oy))
-    #     sc.blit(tree_surf, tree_rect)
-    # while count_cupper != 0:
-    #     ocx, ocy = (cuppers[(count_cupper - 1)])
-    #     ocx = ocx - x
-    #     ocy = ocy - y
-    #     cupper_surf = pygame.image.load('cupper.bmp')
-    #     count_cupper = count_cupper - 1
-    #     cupper_rect = cupper_surf.get_rect(bottomright=(20, 20), center=(ocx, ocy))
-    #     sc.blit(cupper_surf, cupper_rect)
-    # while count_castle != 0:
-    #     ocax, ocay = (castles[(count_castle - 1)])
-    #     ocax = ocax - x
-    #     ocay = ocay - y
-    #     castle_surf = pygame.image.load('castle.bmp')
-    #     count_castle = count_castle - 1
-    #     castle_rect = castle_surf.get_rect(bottomright=(20, 20), center=(ocax, ocay))
-    #     sc.blit(castle_surf, castle_rect)
+
+    # я не буду к этому прикасаться!!!
     while chundra_max != 0:
         chundra_surf = pygame.image.load('chundra.bmp')
         chundra_max = chundra_max - 1
@@ -172,11 +157,13 @@ def update(count_castle, count_cupper, cupper_surf, count_tree, tree_surf, tree_
 update(count_castle, count_cupper, cupper_surf, count_tree, tree_surf, tree_rect, tres, chundra_max, x, y)
 
 while 1:
+    drawUPD(x, y)  # постоянная отрисовка. по хорошому должна быть тредом
+    time.sleep(0.005)  # оптимизация производительности
 
+    # г.. ниже НЕОБХОДИМО вынести в отдельную функцию
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             exit()
-
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
                 # странное решение => вызывать update при событиях event

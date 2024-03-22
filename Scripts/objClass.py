@@ -13,9 +13,17 @@ class drawObj:
 
     # def draw(self):
     #   TODO: drawing most be move here and use for overload in child classes
+    def hover(self):
+        return self.__class__
 
     def __init__(self, X: int, Y: int, sprite):
         self.posX = X
         self.posY = Y
         self.sprite = sprite
         self.spriteSurf = image.load(sprite)
+
+class tree(drawObj):
+
+    def __init__(self, X: int, Y: int, sprite):
+        super().__init__(X, Y, sprite)
+        pass
