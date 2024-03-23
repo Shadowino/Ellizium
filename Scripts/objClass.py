@@ -1,4 +1,5 @@
 from pygame import *
+from vec2 import *
 
 class drawObj:
     """
@@ -23,7 +24,25 @@ class drawObj:
         self.spriteSurf = image.load(sprite)
 
 class tree(drawObj):
-
-    def __init__(self, X: int, Y: int, sprite):
-        super().__init__(X, Y, sprite)
+    def __init__(self, X: int, Y: int):
+        super().__init__(X, Y, "tree.bmp")
         pass
+
+class item(drawObj):
+    id = "cocos"
+    pass
+
+class player_t(drawObj):
+    health = 100
+    inv: list[item] = []
+    move = [0, 0, 0, 0]
+    speed = 3
+
+    def __init__(self, posX=0, posY=0):
+        self.mov = vec2()
+        # self.posX = posX
+        # self.posY = posY
+        super().__init__(posX, posY, "player.bmp")
+        # self.col = [200, 150, 50]
+        pass
+    pass
