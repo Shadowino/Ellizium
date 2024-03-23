@@ -7,7 +7,7 @@ from objClass import *
 import time
 # from tkinter import image_types
 # from array import *
-
+# код емае пиши
 # инициализация всякого
 pygame.init()
 Wsize = (1024, 720)  # размеры окна, вместо магических чисел
