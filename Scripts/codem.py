@@ -29,6 +29,8 @@ pygame.draw.rect(sc, (0, 0, 255), (0, 0, Wsize[0], Wsize[1]), a)
 # gamer = pygame.draw.rect(sc, (255, 0, 0), (150, 150, 50, 20)) # не используеться!
 pygame.display.update()
 
+player: player_t = player_t()
+
 player_surf = pygame.image.load('player.bmp')
 cupper_surf = pygame.image.load("cupper.bmp")
 cuppers = []
@@ -87,6 +89,23 @@ for i in cuppers:
 for i in castles:
     Gobj.append(drawObj(i[0], i[1], "castle.bmp"))
 
+def phisicsUpdate():
+    npos = vec2(0,0)
+    if player.move[0]:
+        npos.y -= 1
+    if player.move[1]:
+        npos.x += 1
+    if player.move[2]:
+        npos.y += 1
+    if player.move[3]:
+        npos.x -= 1
+
+    npos += npos.norm() * player.speed
+    # npos = player.mov.norm() * player.speed
+    player.posX += npos.x
+    player.posY += npos.y
+    pass
+
 # функция открисовки обьектов из списка Gobj
 def drawUPD(x, y):
     """
@@ -97,6 +116,8 @@ def drawUPD(x, y):
     sc.fill((0, 255, 255)) # правильная очистка экрана..
     # pygame.draw.rect(sc, (0, 255, 255), (0, 0, 1000, 1000), a)  # очистка экрана..
     Mrect = pygame.draw.rect(sc, [255, 255, 255], [mouse.get_pos(), (3, 3)], 2)
+    player_rect = player_surf.get_rect(bottomright=(10, 20), center=(500, 500))
+    sc.blit(player_surf, player_rect)
     for i in Gobj:
         ox, oy = (i.posX - x, i.posY - y)
         sp = i.spriteSurf
@@ -112,6 +133,8 @@ def drawUPD(x, y):
     drawText("build:debug", 10, 10)
     drawText("mouse:" + str(mouse.get_pos()), 10, 20)
     pygame.display.update()  # необходимо для самостоятельной работы функции
+    phisicsUpdate()
+    pass
 
 
 def drawText(text: str, posX, posY):
@@ -128,8 +151,6 @@ def interface(hp) :
 def update(count_castle, count_cupper, cupper_surf, count_tree, tree_surf, tree_rect, tres, chundra_max, x, y , hp):
     sc.fill((0, 255, 255)) # ПРАВИЛЬНАЯ очистка экрана
     drawUPD(x, y) # заменяет весь закоментированный ниже код
-
-
     # я не буду к этому прикасаться!!!
     while chundra_max != 0:
         chundra_surf = pygame.image.load('chundra.bmp')
@@ -160,48 +181,48 @@ def update(count_castle, count_cupper, cupper_surf, count_tree, tree_surf, tree_
     drawText("FPS" + str(15), 15, 0)
 
 
-update(count_castle, count_cupper, cupper_surf, count_tree, tree_surf, tree_rect, tres, chundra_max, x, y, hp)
 
 while 1:
-    drawUPD(x, y)  # постоянная отрисовка. по хорошому должна быть тредом
+    # drawUPD(x, y)  # постоянная отрисовка. по хорошому должна быть тредом
+    update(count_castle, count_cupper, cupper_surf, count_tree, tree_surf, tree_rect, tres, chundra_max, player.posX, player.posY, hp)
+    # update(count_castle, count_cupper, cupper_surf, count_tree, tree_surf, tree_rect, tres, chundra_max, x,
+    #        y, hp)
     time.sleep(0.005)  # оптимизация производительности
 
     # г.. ниже НЕОБХОДИМО вынести в отдельную функцию
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             exit()
+            pass
+        if event.type == pygame.KEYUP:
+            match event.key:
+                case pygame.K_UP:
+                    player.move[0] = 0
+                    pass
+                case pygame.K_DOWN:
+                    player.move[2] = 0
+                    pass
+                case pygame.K_LEFT:
+                    player.move[3] = 0
+                    pass
+                case pygame.K_RIGHT:
+                    player.move[1] = 0
+                    pass
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT:
-                # странное решение => вызывать update при событиях event
-                update(count_castle, count_cupper, cupper_surf, count_tree, tree_surf, tree_rect, tres, chundra_max, x,
-                       y , hp)
-                x = x - speed
-                player_rect = player_surf.get_rect(bottomright=(10, 20), center=(500, 500))
-                sc.blit(player_surf, player_rect)
-
-                pygame.display.update()
-            elif event.key == pygame.K_RIGHT:
-                update(count_castle, count_cupper, cupper_surf, count_tree, tree_surf, tree_rect, tres, chundra_max, x,
-                       y , hp)
-                x = x + speed
-                player_rect = player_surf.get_rect(bottomright=(10, 20), center=(500, 500))
-                sc.blit(player_surf, player_rect)
-                pygame.display.update()
-            elif event.key == pygame.K_DOWN:
-                update(count_castle, count_cupper, cupper_surf, count_tree, tree_surf, tree_rect, tres, chundra_max, x,
-                       y , hp)
-                y = y + speed
-                player_rect = player_surf.get_rect(bottomright=(10, 20), center=(500, 500))
-                sc.blit(player_surf, player_rect)
-                pygame.display.update()
-            elif event.key == pygame.K_UP:
-                update(count_castle, count_cupper, cupper_surf, count_tree, tree_surf, tree_rect, tres, chundra_max, x,
-                       y , hp)
-                y = y - speed
-                player_rect = player_surf.get_rect(bottomright=(10, 20), center=(500, 500))
-                sc.blit(player_surf, player_rect)
-                pygame.display.update()
-            elif event.key == pygame.K_ESCAPE:
+            match event.key:
+                case pygame.K_UP:
+                    player.move[0] = 1
+                    pass
+                case pygame.K_DOWN:
+                    player.move[2] = 1
+                    pass
+                case pygame.K_LEFT:
+                    player.move[3] = 1
+                    pass
+                case pygame.K_RIGHT:
+                    player.move[1] = 1
+                    pass
+            if event.key == pygame.K_ESCAPE:
                 root = Tk()
                 root.title("Settings")
                 root.geometry("250x200")
@@ -222,7 +243,7 @@ while 1:
                 inv.mainloop()
             else:
                 # здесь была открисовка игрока
-                print(chundra_max)
+                # print(chundra_max)
                 while chundra_max != 0:
                     chundra_surf = pygame.image.load('chundra.bmp')
                     chundra_max = chundra_max - 1
