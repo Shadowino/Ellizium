@@ -94,7 +94,8 @@ def drawUPD(x, y):
     **warning работает с глобальной `sc`** \n
     TODO: **переписать** `update` сюда \n
     """
-    pygame.draw.rect(sc, (0, 255, 255), (0, 0, 1000, 1000), a)  # очистка экрана..
+    sc.fill((0, 255, 255)) # правильная очистка экрана..
+    # pygame.draw.rect(sc, (0, 255, 255), (0, 0, 1000, 1000), a)  # очистка экрана..
     Mrect = pygame.draw.rect(sc, [255, 255, 255], [mouse.get_pos(), (3, 3)], 2)
     for i in Gobj:
         ox, oy = (i.posX - x, i.posY - y)
