@@ -7,7 +7,6 @@ from objClass import *
 import time
 # from tkinter import image_types
 # from array import *
-# код емае пиши
 # инициализация всякого
 pygame.init()
 Wsize = (1024, 720)  # размеры окна, вместо магических чисел
@@ -21,12 +20,10 @@ cords = 0
 reapet_trees = 1000
 reapet_cupper = 100
 tres = []
-# inv = pygame.display.set_mode((100, 100)) # что это?
 pygame.display.set_caption("окно Элизиума")
 pygame.display.set_icon(pygame.image.load("icon.bmp"))
 sc = pygame.display.set_mode(Wsize)
 pygame.draw.rect(sc, (0, 0, 255), (0, 0, Wsize[0], Wsize[1]), a)
-# gamer = pygame.draw.rect(sc, (255, 0, 0), (150, 150, 50, 20)) # не используеться!
 pygame.display.update()
 
 player: player_t = player_t()
@@ -46,11 +43,9 @@ while reapet_castles != 0:
     reapet_castles = reapet_castles - 1
     castles.append((random.randint(-2000, 2000), (random.randint(-2000, 2000))))
 
-count_tree = len(tres)
+count_tree = len(tres) # допустим (см стр62)
 tree_surf = pygame.image.load('tree.bmp')
 tree_rect = tree_surf.get_rect(bottomright=(30, 50), center=(200, 150))
-sc.blit(tree_surf, tree_rect)
-pygame.display.update()
 chundra_surf = pygame.image.load('chundra.bmp')
 chundra_count = 0
 castle_surf = pygame.image.load('castle.bmp')
@@ -60,24 +55,14 @@ while chundra_count != 0:
     chundra_count = chundra_count - 1
     chundra.append((random.randint(0, 1000), (random.randint(0, 1000))))
 
-chundra_max = len(chundra)
-chundra_rect = chundra_surf.get_rect(bottomright=(10, 20), center=(tres[(count_tree - 1)]))
+chundra_max = len(chundra) # зачем? (см стр48)
+chundra_rect = chundra_surf.get_rect(bottomright=(10, 20), center=(tres[(count_tree - 1)])) # причем тут count_tree?
 
 player_rect = player_surf.get_rect(bottomright=(10, 20), center=(500, 500))
-sc.blit(player_surf, player_rect)
-pygame.display.update()
 
 count_tree = len(tres)
 count_cupper = len(cuppers)
 count_castle = len(castles)
-while chundra_max != 0:
-    chundra_surf = pygame.image.load('chundra.bmp')
-    chundra_max = chundra_max - 1
-
-    chundra_rect = chundra_surf.get_rect(bottomright=(30, 50), center=(tres[count_tree - 1]))
-
-    sc.blit(tree_surf, tree_rect)
-    pygame.display.update()
 chundra_max = len(chundra)
 
 Gobj: list[drawObj] = []  # список всех обьектов

@@ -21,7 +21,9 @@ class drawObj:
         self.posX = X
         self.posY = Y
         self.sprite = sprite
-        self.spriteSurf = image.load(sprite)
+        self.spriteSurf = image.load(sprite) # возможно сделали х**ню...
+        # возможно не стоит хранить копью спрайта в КАЖДОМ обьекте...
+        # возможно... не понятно как сделать лучше
 
 class tree(drawObj):
     def __init__(self, X: int, Y: int):
