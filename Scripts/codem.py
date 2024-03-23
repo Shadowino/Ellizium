@@ -83,7 +83,8 @@ chundra_max = len(chundra)
 Gobj: list[drawObj] = []  # список всех обьектов
 # загрузка обьектов в общий список всего
 for i in tres:
-    Gobj.append(drawObj(i[0], i[1], "tree.bmp"))
+    Gobj.append(tree(i[0], i[1]))
+    # Gobj.append(drawObj(i[0], i[1], "tree.bmp"))
 for i in cuppers:
     Gobj.append(drawObj(i[0], i[1], "cupper.bmp"))
 for i in castles:
