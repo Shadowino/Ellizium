@@ -107,6 +107,7 @@ def drawUPD(x, y):
         # tree_surf = pygame.image.load(i.sprite)
         # tree_rect = tree_surf.get_rect(bottomright=(30, 50), center=(ox, oy))
         pass
+    interface(hp)
     drawText("build:debug", 10, 10)
     drawText("mouse:" + str(mouse.get_pos()), 10, 20)
     pygame.display.update()  # необходимо для самостоятельной работы функции
@@ -121,12 +122,12 @@ def drawText(text: str, posX, posY):
     sc.blit(text1, (posX, posY))
 
 def interface(hp) :
-    pygame.draw.rect(sc,(255,0,0) , (1024 , 720 , 30 , hp))
+    pygame.draw.rect(sc,(255, 0, 0), (900, 690, hp, 20))
     pygame.display.update()
 def update(count_castle, count_cupper, cupper_surf, count_tree, tree_surf, tree_rect, tres, chundra_max, x, y , hp):
     sc.fill((0, 255, 255)) # ПРАВИЛЬНАЯ очистка экрана
-    interface(hp)
     drawUPD(x, y) # заменяет весь закоментированный ниже код
+
 
     # я не буду к этому прикасаться!!!
     while chundra_max != 0:
@@ -158,7 +159,7 @@ def update(count_castle, count_cupper, cupper_surf, count_tree, tree_surf, tree_
     drawText("FPS" + str(15), 15, 0)
 
 
-update(count_castle, count_cupper, cupper_surf, count_tree, tree_surf, tree_rect, tres, chundra_max, x, y)
+update(count_castle, count_cupper, cupper_surf, count_tree, tree_surf, tree_rect, tres, chundra_max, x, y, hp)
 
 while 1:
     drawUPD(x, y)  # постоянная отрисовка. по хорошому должна быть тредом
