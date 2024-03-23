@@ -4,9 +4,10 @@
 
 ## как установить?
 
-1. скопируйте репозиторий в вашу рабочую папку с помощью `git clone git@github.com:Shadowino/Ellizium.git` 
-2. (рекомендуеться) установите python 3.10.3 [здесь](https://www.python.org/ftp/python/3.10.3/python-3.10.3-amd64.exe)
-3. откройте папку в вашей IDE и приступайте!
+1. (рекомендуеться) установите python 3.10.3 [здесь](https://www.python.org/ftp/python/3.10.3/python-3.10.3-amd64.exe)
+2. (рекомендуеться) установите библиотеку pygame `pip install pygame`
+3. скопируйте репозиторий в вашу рабочую папку с помощью `git clone git@github.com:Shadowino/Ellizium.git` 
+4. откройте папку в вашей IDE и приступайте!
 
 > работайте из папки `Scripts`. включена поддержка виртуального окружения `venv`
 
