@@ -10,29 +10,42 @@ import time
 # инициализация всякого
 pygame.init()
 Wsize = (1024, 720)  # размеры окна, вместо магических чисел
-a = 0  # safdasd
 x = 500
 y = 500
 hp = 100
-speed = 5
+# speed = 5 # больше не используеться см класс player_t в objClass.py
 inventory = []
 cords = 0
-reapet_trees = 1000
-reapet_cupper = 100
-tres = []
+
+# инициализация окна
 pygame.display.set_caption("окно Элизиума")
 pygame.display.set_icon(pygame.image.load("icon.bmp"))
 sc = pygame.display.set_mode(Wsize)
-pygame.draw.rect(sc, (0, 0, 255), (0, 0, Wsize[0], Wsize[1]), a)
+sc.fill((0, 0, 255))
 pygame.display.update()
 
 player: player_t = player_t()
 
+# здесь все surf
 player_surf = pygame.image.load('player.bmp')
 cupper_surf = pygame.image.load("cupper.bmp")
+tree_surf = pygame.image.load('tree.bmp')
+chundra_surf = pygame.image.load('chundra.bmp')
+castle_surf = pygame.image.load('castle.bmp')
+
+# стартовые массивы для генерации
+tres = []
 cuppers = []
 castles = []
+chundra = []
+
+# ээээ ок
+reapet_trees = 1000
+reapet_cupper = 100
 reapet_castles = 100
+chundra_count = 0  # все люди как люди. а ты чундра коунт
+
+# генерация
 while reapet_trees != 0:
     reapet_trees = reapet_trees - 1
     tres.append((random.randint(-2000, 2000), (random.randint(-2000, 2000))))
@@ -42,40 +55,35 @@ while reapet_cupper != 0:
 while reapet_castles != 0:
     reapet_castles = reapet_castles - 1
     castles.append((random.randint(-2000, 2000), (random.randint(-2000, 2000))))
-
-count_tree = len(tres) # допустим (см стр62)
-tree_surf = pygame.image.load('tree.bmp')
-tree_rect = tree_surf.get_rect(bottomright=(30, 50), center=(200, 150))
-chundra_surf = pygame.image.load('chundra.bmp')
-chundra_count = 0
-castle_surf = pygame.image.load('castle.bmp')
-chundra = []
-
 while chundra_count != 0:
     chundra_count = chundra_count - 1
     chundra.append((random.randint(0, 1000), (random.randint(0, 1000))))
 
-chundra_max = len(chundra) # зачем? (см стр48)
-chundra_rect = chundra_surf.get_rect(bottomright=(10, 20), center=(tres[(count_tree - 1)])) # причем тут count_tree?
-
-player_rect = player_surf.get_rect(bottomright=(10, 20), center=(500, 500))
-
+# -_-
 count_tree = len(tres)
 count_cupper = len(cuppers)
 count_castle = len(castles)
 chundra_max = len(chundra)
 
+# rect всех мастей
+chundra_rect = chundra_surf.get_rect(bottomright=(10, 20), center=(tres[(count_tree - 1)])) # причем тут count_tree?
+tree_rect = tree_surf.get_rect(bottomright=(30, 50), center=(200, 150))
+player_rect = player_surf.get_rect(bottomright=(10, 20), center=(500, 500))
+
 Gobj: list[drawObj] = []  # список всех обьектов
 # загрузка обьектов в общий список всего
 for i in tres:
     Gobj.append(tree(i[0], i[1]))
-    # Gobj.append(drawObj(i[0], i[1], "tree.bmp"))
 for i in cuppers:
     Gobj.append(drawObj(i[0], i[1], "cupper.bmp"))
 for i in castles:
     Gobj.append(drawObj(i[0], i[1], "castle.bmp"))
 
 def phisicsUpdate():
+    """
+    занимаеться обработкой игровых событий
+    :return:
+    """
     npos = vec2(0,0)
     if player.move[0]:
         npos.y -= 1
@@ -95,7 +103,7 @@ def phisicsUpdate():
 # функция открисовки обьектов из списка Gobj
 def drawUPD(x, y):
     """
-    функция открисовки всего, потенциальная замена для update \n
+    функция открисовки всего, замена для update \n
     **warning работает с глобальной `sc`** \n
     TODO: **переписать** `update` сюда \n
     """
