@@ -65,6 +65,7 @@ count_cupper = len(cuppers)
 count_castle = len(castles)
 chundra_max = len(chundra)
 
+
 # rect всех мастей
 chundra_rect = chundra_surf.get_rect(bottomright=(10, 20), center=(tres[(count_tree - 1)])) # причем тут count_tree?
 tree_rect = tree_surf.get_rect(bottomright=(30, 50), center=(200, 150))
@@ -99,7 +100,20 @@ def phisicsUpdate():
     player.posX += npos.x
     player.posY += npos.y
     pass
+#погода
 
+class events :
+    count = 0
+    def events():
+        self.count = 0
+        pass
+    def rain(self, count) :
+        self.count = count
+        while count != 0 :
+            pygame.draw.rect(sc , (0,0,255) , [random.randint(0,1000) , random.randint(0,1000) , 5 , 10])
+            count = count - 1
+        pygame.display.update()
+reve = events()
 # функция открисовки обьектов из списка Gobj
 def drawUPD(x, y):
     """
@@ -128,6 +142,8 @@ def drawUPD(x, y):
     drawText("mouse:" + str(mouse.get_pos()), 10, 20)
     pygame.display.update()  # необходимо для самостоятельной работы функции
     phisicsUpdate()
+    # events.rain(1000)
+    reve.rain(1000)
     pass
 
 
