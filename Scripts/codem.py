@@ -4,6 +4,8 @@ import random
 from tkinter import *
 from tkinter import ttk
 from objClass import *
+from events import *
+from inventory import *
 import time
 # from tkinter import image_types
 # from array import *
@@ -14,7 +16,7 @@ x = 500
 y = 500
 hp = 100
 # speed = 5 # больше не используеться см класс player_t в objClass.py
-inventory = []
+
 cords = 0
 
 # инициализация окна
@@ -100,19 +102,13 @@ def phisicsUpdate():
     player.posX += npos.x
     player.posY += npos.y
     pass
-#погода
+#инвентарь
+ooo = inven()
+left_arm = ""
+right_arm = "tree.bmp"
 
-class events :
-    count = 0
-    def events():
-        self.count = 0
-        pass
-    def rain(self, count) :
-        self.count = count
-        while count != 0 :
-            pygame.draw.rect(sc , (0,0,255) , [random.randint(0,1000) , random.randint(0,1000) , 5 , 10])
-            count = count - 1
-        pygame.display.update()
+
+
 reve = events()
 # функция открисовки обьектов из списка Gobj
 def drawUPD(x, y):
@@ -141,9 +137,12 @@ def drawUPD(x, y):
     drawText("build:debug", 10, 10)
     drawText("mouse:" + str(mouse.get_pos()), 10, 20)
     pygame.display.update()  # необходимо для самостоятельной работы функции
+    
     phisicsUpdate()
     # events.rain(1000)
-    reve.rain(1000)
+    reve.partical_rain(1000)
+    # hand_write
+    ooo.right_arm_give(right_arm)
     pass
 
 
