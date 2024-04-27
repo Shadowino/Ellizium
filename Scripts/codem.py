@@ -164,7 +164,7 @@ def drawText(text: str, posX, posY):
 
 def interface(hp,oxi) :
     pygame.draw.rect(sc,(255, 0, 0), (900, 650, oxi, 20))
-    pygame.draw.rect(sc,(255, 0, 0), (900, 690, hp, 20))
+    pygame.draw.rect(sc,(255, 255, 255), (900, 690, hp, 20))
     pygame.display.update()
 def update(count_castle, count_cupper, cupper_surf, count_tree, tree_surf, tree_rect, tres, chundra_max, x, y , hp):
     sc.fill((0, 255, 255)) # ПРАВИЛЬНАЯ очистка экрана
