@@ -14,9 +14,17 @@ pygame.init()
 Wsize = (1024, 720)  # размеры окна, вместо магических чисел
 x = 500
 y = 500
-hp = 100
-# speed = 5 # больше не используеться см класс player_t в objClass.py
 
+# хорактеристики перса
+hp = random.randint(1,100)
+oxi = random.randint(1,100)
+gen = random.randint(1,3)
+patolagies = []
+count_patolagies = random.randint(1,3)
+while count_patolagies != 0 :
+    patolagies.append(random.randint())
+    count_patolagies = count_patolagies - 1
+# speed = 5 # больше не используеться см класс player_t в objClass.py
 cords = 0
 
 # инициализация окна
@@ -154,7 +162,8 @@ def drawText(text: str, posX, posY):
     text1 = pygame.font.SysFont("consolas", 15).render(text, 1, (10, 10, 10))
     sc.blit(text1, (posX, posY))
 
-def interface(hp) :
+def interface(hp,oxi) :
+    pygame.draw.rect(sc,(255, 0, 0), (900, 650, oxi, 20))
     pygame.draw.rect(sc,(255, 0, 0), (900, 690, hp, 20))
     pygame.display.update()
 def update(count_castle, count_cupper, cupper_surf, count_tree, tree_surf, tree_rect, tres, chundra_max, x, y , hp):
