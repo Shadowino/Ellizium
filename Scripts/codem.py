@@ -69,7 +69,7 @@ chundra_max = len(chundra)
 
 
 # rect всех мастей
-chundra_rect = chundra_surf.get_rect(bottomright=(10, 20), center=(tres[(count_tree - 1)])) # причем тут count_tree?
+chundra_rect = chundra_surf.get_rect(bottomright=(10, 20), center=(tres[(count_tree - 1)]))  # причем тут count_tree?
 tree_rect = tree_surf.get_rect(bottomright=(30, 50), center=(200, 150))
 player_rect = player_surf.get_rect(bottomright=(10, 20), center=(500, 500))
 
@@ -87,7 +87,7 @@ def phisicsUpdate():
     занимаеться обработкой игровых событий
     :return:
     """
-    npos = vec2(0,0)
+    npos = vec2(0, 0)
     if player.move[0]:
         npos.y -= 1
     if player.move[1]:
