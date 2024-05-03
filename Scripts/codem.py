@@ -14,7 +14,6 @@ pygame.init()
 Wsize = (1024, 720)  # размеры окна, вместо магических чисел
 x = 500
 y = 500
-
 # хорактеристики перса
 hp = random.randint(1,100)
 oxi = random.randint(1,100)
@@ -26,7 +25,11 @@ while count_patolagies != 0 :
     count_patolagies = count_patolagies - 1
 # speed = 5 # больше не используеться см класс player_t в objClass.py
 cords = 0
-
+#отрисовка травы из граф примов
+def DrawGrass(self,x,y):
+    self.x = x
+    self.y = y
+    pygame.draw.polygon(sc,(0,255,0),(((x,y)),((x-3,y-3),(x,y-3))))
 # инициализация окна
 pygame.display.set_caption("окно Элизиума")
 pygame.display.set_icon(pygame.image.load("icon.bmp"))
@@ -48,12 +51,14 @@ tres = []
 cuppers = []
 castles = []
 chundra = []
+grass = []
 
 # ээээ ок
 reapet_trees = 1000
 reapet_cupper = 100
 reapet_castles = 100
 chundra_count = 0  # все люди как люди. а ты чундра коунт
+reapet_grass = 1000
 
 # генерация
 while reapet_trees != 0:
@@ -68,7 +73,9 @@ while reapet_castles != 0:
 while chundra_count != 0:
     chundra_count = chundra_count - 1
     chundra.append((random.randint(0, 1000), (random.randint(0, 1000))))
-
+while reapet_grass != 0:
+    reapet_grass = reapet_grass - 1
+    DrawGrass(random.randint(-10000,10000),random.randint(-10000,10000))
 # -_-
 count_tree = len(tres)
 count_cupper = len(cuppers)
