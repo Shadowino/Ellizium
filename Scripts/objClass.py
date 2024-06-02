@@ -36,6 +36,7 @@ class item(drawObj):
 
 class player_t(drawObj):
     health = 100
+    oxygen = 100
     inv: list[item] = []
     move = [0, 0, 0, 0]
     speed = 3
